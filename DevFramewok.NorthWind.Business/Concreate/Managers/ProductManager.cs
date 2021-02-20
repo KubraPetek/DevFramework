@@ -2,6 +2,7 @@
 using DevFramewok.NorthWind.Business.ValidationRules.FluentValidation;
 using DevFramework.Core.Aspects.PostSharp;
 using DevFramework.Core.CrossCuttingConcerns.Validation.FluentValidation;
+using DevFramework.Core.DataAccess;
 using DevFramework.NorthWind.DataAccess.Abstract;
 using DevFramework.NorthWind.Entities.Concreate;
 using System;
@@ -15,8 +16,11 @@ namespace DevFramewok.NorthWind.Business.Concreate.Managers
     public class ProductManager : IProductService
     {
         private IProductDal _productDal;
+        //private IQueryaleRepository<Product> _queryable;
         public ProductManager(IProductDal productDal)
         {
+            //(IProductDal productDal, IQueryaleRepository<Product> queryable)
+            //_queryable = queryable;
             _productDal = productDal;
         }
         [FluentValidationAspect(typeof(ProductValidator))]
@@ -28,6 +32,7 @@ namespace DevFramewok.NorthWind.Business.Concreate.Managers
 
         public List<Product> GetAll()
         {
+           // _queryable.Table()
             return _productDal.GetList();
         }
 
