@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DevFramework.Core.Aspects.PostSharp
+namespace DevFramework.Core.Aspects.PostSharp.ValidationAspects
 {
     [Serializable]
-    public class FluentValidationAspect:OnMethodBoundaryAspect
+    public class FluentValidationAspect : OnMethodBoundaryAspect
     {
         Type _validatorType;
         public FluentValidationAspect(Type validatorType)
@@ -19,10 +19,10 @@ namespace DevFramework.Core.Aspects.PostSharp
         }
         public override void OnEntry(MethodExecutionArgs args)
         {
-            var validator =(IValidator) Activator.CreateInstance(_validatorType);
+            var validator = (IValidator)Activator.CreateInstance(_validatorType);
             var entityType = _validatorType.BaseType.GetGenericArguments()[0];
             var entities = args.Arguments.Where(t => t.GetType() == entityType);
-            foreach(var entity in entities)
+            foreach (var entity in entities)
             {
                 ValidatorTool.FluentValidate(validator, entity);
             }

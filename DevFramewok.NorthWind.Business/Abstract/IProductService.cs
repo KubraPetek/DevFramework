@@ -13,5 +13,6 @@ namespace DevFramewok.NorthWind.Business.Abstract
         Product GetById(int id);
         Product Add(Product product);
         Product Update(Product product);
+        void TransactionalOperations(Product product1, Product product2);
     }
 }

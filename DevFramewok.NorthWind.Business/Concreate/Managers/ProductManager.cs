@@ -1,15 +1,14 @@
 ﻿using DevFramewok.NorthWind.Business.Abstract;
 using DevFramewok.NorthWind.Business.ValidationRules.FluentValidation;
-using DevFramework.Core.Aspects.PostSharp;
-using DevFramework.Core.CrossCuttingConcerns.Validation.FluentValidation;
-using DevFramework.Core.DataAccess;
+using DevFramework.Core.Aspects.PostSharp.CacheAspects;
+using DevFramework.Core.Aspects.PostSharp.TransactionAspects;
+using DevFramework.Core.Aspects.PostSharp.ValidationAspects;
+using DevFramework.Core.CrossCuttingConcerns.Caching.Microsoft;
 using DevFramework.NorthWind.DataAccess.Abstract;
 using DevFramework.NorthWind.Entities.Concreate;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Transactions;
 
 namespace DevFramewok.NorthWind.Business.Concreate.Managers
 {
@@ -24,15 +23,16 @@ namespace DevFramewok.NorthWind.Business.Concreate.Managers
             _productDal = productDal;
         }
         [FluentValidationAspect(typeof(ProductValidator))]
+        [CacheRemoveAspect(typeof(MemoryCacheManager))]
         public Product Add(Product product)
         {
             //ValidatorTool.FluentValidate(new ProductValidator(), product);
             return _productDal.Add(product);
         }
-
+        [CacheAspect(typeof(MemoryCacheManager), 120)]
         public List<Product> GetAll()
         {
-           // _queryable.Table()
+            // _queryable.Table()
             return _productDal.GetList();
         }
 
@@ -41,11 +41,34 @@ namespace DevFramewok.NorthWind.Business.Concreate.Managers
             return _productDal.Get(p => p.ProductId == id);
 
         }
+        [TransactionScopeAspect]
+        public void TransactionalOperations(Product product1, Product product2)
+        {
+            //using(TransactionScope scope=new TransactionScope())
+            //{
+            //    try
+            //    {
+            //        _productDal.Add(product1);
+            //        //Business Codes
+            //        _productDal.Update(product2);
+            //        scope.Complete();
+
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        Console.WriteLine(e);
+            //        scope.Dispose();
+            //    }
+            //}
+            _productDal.Add(product1);
+            _productDal.Update(product2);
+
+        }
 
         [FluentValidationAspect(typeof(ProductValidator))]
         public Product Update(Product product)
         {
-           // ValidatorTool.FluentValidate(new ProductValidator(), product);
+            // ValidatorTool.FluentValidate(new ProductValidator(), product);
             return _productDal.Update(product);
         }
     }
