@@ -48,6 +48,7 @@ namespace DevFramewok.NorthWind.Business.Concreate.Managers
 
         }
         [TransactionScopeAspect]
+        [FluentValidationAspect(typeof(ProductValidator))]
         public void TransactionalOperations(Product product1, Product product2)
         {
             //using(TransactionScope scope=new TransactionScope())

@@ -32,10 +32,27 @@ namespace DevFramework.Northwind.MvcWebUI.Controllers
                 CategoryId = 1,
                 ProductName = "GSM",
                 QuantityPerUnit = "1",
-                UnitPrice = 12
+                UnitPrice = 21
             });
                 
             return "Added";
+        }
+        public string AddUpdate()
+        {
+            _productService.TransactionalOperations(new NorthWind.Entities.Concreate.Product
+            {
+                CategoryId = 1,
+                ProductName = "GSM",
+                QuantityPerUnit = "1",
+                UnitPrice = 21
+            },new NorthWind.Entities.Concreate.Product {
+                CategoryId = 1,
+                ProductName = "GSM",
+                QuantityPerUnit = "1",
+                UnitPrice = 12
+            });
+
+            return "Done";
         }
     }
 }
