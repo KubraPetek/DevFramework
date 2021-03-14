@@ -14,6 +14,7 @@ using System.Transactions;
 
 namespace DevFramewok.NorthWind.Business.Concreate.Managers
 {
+   // [LogAspect(typeof(FileLogger))]//Classtaki tüm metotlar loglanacaktır  //yada tüm managerların loglanması için Assambly info içinde bu tanımı yazabiliriz 
     public class ProductManager : IProductService
     {
         private IProductDal _productDal;
