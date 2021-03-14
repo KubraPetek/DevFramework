@@ -1,4 +1,5 @@
-﻿using DevFramework.Core.Aspects.PostSharp.LogAspects;
+﻿using DevFramework.Core.Aspects.PostSharp.ExceptionAspects;
+using DevFramework.Core.Aspects.PostSharp.LogAspects;
 using DevFramework.Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -16,6 +17,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly:LogAspect(typeof(DatabaseLogger),AttributeTargetTypes= "DevFramewok.NorthWind.Business.Concreate.Managers.*")]//name spacesi buna uyan tüm managerları loglamaya yarayacak
+[assembly:ExceptionLogAspect(typeof(DatabaseLogger),AttributeTargetTypes= "DevFramewok.NorthWind.Business.Concreate.Managers.*")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
