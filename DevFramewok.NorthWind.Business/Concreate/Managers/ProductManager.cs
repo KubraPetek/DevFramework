@@ -33,6 +33,7 @@ namespace DevFramewok.NorthWind.Business.Concreate.Managers
         }
         [CacheAspect(typeof(MemoryCacheManager), 120)]
         [LogAspect(typeof(DatabaseLogger))]
+        [LogAspect(typeof(FileLogger))]
         public List<Product> GetAll()
         {
             // _queryable.Table()
