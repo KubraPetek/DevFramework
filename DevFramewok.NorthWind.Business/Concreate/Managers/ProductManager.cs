@@ -1,9 +1,11 @@
 ﻿using DevFramewok.NorthWind.Business.Abstract;
 using DevFramewok.NorthWind.Business.ValidationRules.FluentValidation;
 using DevFramework.Core.Aspects.PostSharp.CacheAspects;
+using DevFramework.Core.Aspects.PostSharp.LogAspects;
 using DevFramework.Core.Aspects.PostSharp.TransactionAspects;
 using DevFramework.Core.Aspects.PostSharp.ValidationAspects;
 using DevFramework.Core.CrossCuttingConcerns.Caching.Microsoft;
+using DevFramework.Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using DevFramework.NorthWind.DataAccess.Abstract;
 using DevFramework.NorthWind.Entities.Concreate;
 using System;
@@ -30,6 +32,7 @@ namespace DevFramewok.NorthWind.Business.Concreate.Managers
             return _productDal.Add(product);
         }
         [CacheAspect(typeof(MemoryCacheManager), 120)]
+        [LogAspect(typeof(DatabaseLogger))]
         public List<Product> GetAll()
         {
             // _queryable.Table()
