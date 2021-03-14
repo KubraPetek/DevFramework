@@ -2,6 +2,7 @@
 using DevFramewok.NorthWind.Business.ValidationRules.FluentValidation;
 using DevFramework.Core.Aspects.PostSharp.CacheAspects;
 using DevFramework.Core.Aspects.PostSharp.LogAspects;
+using DevFramework.Core.Aspects.PostSharp.PerformanceAspect;
 using DevFramework.Core.Aspects.PostSharp.TransactionAspects;
 using DevFramework.Core.Aspects.PostSharp.ValidationAspects;
 using DevFramework.Core.CrossCuttingConcerns.Caching.Microsoft;
@@ -36,6 +37,7 @@ namespace DevFramewok.NorthWind.Business.Concreate.Managers
         [CacheAspect(typeof(MemoryCacheManager), 120)]
         [LogAspect(typeof(DatabaseLogger))]
         [LogAspect(typeof(FileLogger))]
+        [PerformanceCounterAspect(2)]//bu metodun çalışması 2 saniyeyi geçerse log tutcak
         public List<Product> GetAll()
         {
             // _queryable.Table()
