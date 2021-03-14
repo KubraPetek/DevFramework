@@ -26,6 +26,7 @@ namespace DevFramewok.NorthWind.Business.Concreate.Managers
         }
         [FluentValidationAspect(typeof(ProductValidator))]
         [CacheRemoveAspect(typeof(MemoryCacheManager))]
+        [LogAspect(typeof(DatabaseLogger))]
         public Product Add(Product product)
         {
             //ValidatorTool.FluentValidate(new ProductValidator(), product);
