@@ -1,5 +1,6 @@
 ﻿using DevFramewok.NorthWind.Business.Abstract;
 using DevFramewok.NorthWind.Business.ValidationRules.FluentValidation;
+using DevFramework.Core.Aspects.PostSharp.AuthorizationAspects;
 using DevFramework.Core.Aspects.PostSharp.CacheAspects;
 using DevFramework.Core.Aspects.PostSharp.LogAspects;
 using DevFramework.Core.Aspects.PostSharp.PerformanceAspect;
@@ -38,6 +39,7 @@ namespace DevFramewok.NorthWind.Business.Concreate.Managers
         [LogAspect(typeof(DatabaseLogger))]
         [LogAspect(typeof(FileLogger))]
         [PerformanceCounterAspect(2)]//bu metodun çalışması 2 saniyeyi geçerse log tutcak
+        [SecuredOperation(Roles="Admin,Editor")]
         public List<Product> GetAll()
         {
             // _queryable.Table()
