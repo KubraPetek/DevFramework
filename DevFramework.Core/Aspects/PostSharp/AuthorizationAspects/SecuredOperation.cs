@@ -19,7 +19,7 @@ namespace DevFramework.Core.Aspects.PostSharp.AuthorizationAspects
             bool isAuthorized = false;
             foreach (var item in roles)
             {
-                if (!System.Threading.Thread.CurrentPrincipal.IsInRole(item))
+                if (!System.Threading.Thread.CurrentPrincipal.IsInRole(item)) //CurrentPrincipal ;bağımsız, kullanıcı bilgilerini tutan context 
                 {
                     isAuthorized = true;
                 }
