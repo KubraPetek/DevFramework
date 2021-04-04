@@ -44,6 +44,7 @@
     <Compile Include="ComplexTypes\ProductDetail.cs" />
     <Compile Include="Concreate\Category.cs" />
     <Compile Include="Concreate\Product.cs" />
+    <Compile Include="Concreate\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
