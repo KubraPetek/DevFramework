@@ -42,9 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComplexTypes\ProductDetail.cs" />
+    <Compile Include="ComplexTypes\UserRoleItem.cs" />
     <Compile Include="Concreate\Category.cs" />
     <Compile Include="Concreate\Product.cs" />
+    <Compile Include="Concreate\Role.cs" />
     <Compile Include="Concreate\User.cs" />
+    <Compile Include="Concreate\UserRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

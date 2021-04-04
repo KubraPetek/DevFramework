@@ -1,4 +1,5 @@
 ﻿using DevFramework.Core.DataAccess;
+using DevFramework.NorthWind.Entities.ComplexTypes;
 using DevFramework.NorthWind.Entities.Concreate;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace DevFramework.NorthWind.DataAccess.Abstract
 {
     public interface IUserDal:IEntityRepository<User>
     {
-
+        List<UserRoleItem> GetUserRoles(User user);
     }
 }

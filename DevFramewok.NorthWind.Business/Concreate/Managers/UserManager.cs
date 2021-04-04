@@ -1,5 +1,6 @@
 ﻿using DevFramewok.NorthWind.Business.Abstract;
 using DevFramework.NorthWind.DataAccess.Abstract;
+using DevFramework.NorthWind.Entities.ComplexTypes;
 using DevFramework.NorthWind.Entities.Concreate;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,12 @@ namespace DevFramewok.NorthWind.Business.Concreate.Managers
         {
            return _userDal.Get(u => u.UserName == userName & u.Password == password);
         }
+
+        public List<UserRoleItem> GetUserRoles(User user)
+        {
+            return _userDal.GetUserRoles(user);
+        }
+
         public UserManager(IUserDal userDal)
         {
             _userDal = userDal;

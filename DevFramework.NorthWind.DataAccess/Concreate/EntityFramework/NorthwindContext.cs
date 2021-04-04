@@ -19,6 +19,8 @@ namespace DevFramework.NorthWind.DataAccess.Concreate.EntityFramework
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; } //Bunların mappinglerini yapmayı unutma , yapılması çünkü
+        public DbSet<Role> Role { get; set; }//Bunların mappinglerini yapmayı unutma , yapılması çünkü   --İsimler tablo ile aynı olduğu için egrek olmaayabilir
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
