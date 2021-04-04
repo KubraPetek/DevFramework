@@ -1,4 +1,5 @@
-﻿using DevFramework.Core.CrossCuttingConcerns.Security.Web;
+﻿using DevFramewok.NorthWind.Business.Abstract;
+using DevFramework.Core.CrossCuttingConcerns.Security.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +10,30 @@ namespace DevFramework.Northwind.MvcWebUI.Controllers
 {
     public class AccountController : Controller
     {
-        // GET: Account
-        public string Login()
+        private IUserService _userService;
+        public AccountController(IUserService userService)
         {
-            //Normal şartlarda önce kullanıcı db de var mı diye kontrol etmek  lazım
-            AuthenticationHelper.CreateAuthCookie(new Guid(),  
-                "kubrapetek", 
-                "kubrapetek@gmail.com", 
-                DateTime.Now.AddDays(15),
-                new[] { "Admin" },
-                false, 
-                "Kubra",
-                "Petek");
-            return "User is authenticated!";
+            _userService = userService;
+        }
+        // GET: Account
+        public string Login(string userName,string password)//Bunları query string ile almak gerekecek
+        {
+            var user = _userService.GetByUserNameAndPassword(userName, password);
+            if (user!= null)
+            {
+                //Normal şartlarda önce kullanıcı db de var mı diye kontrol etmek  lazım
+                AuthenticationHelper.CreateAuthCookie(new Guid(),
+                    user.UserName,
+                    user.Email,
+                    DateTime.Now.AddDays(15),
+                    new[] { "Admin" },
+                    false,
+                    user.FirstName,
+                    user.LastName);
+                return "User is authenticated!";
+            }
+            return "User is not authenticated!";
+
         }
     }
 }
