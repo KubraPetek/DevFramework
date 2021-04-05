@@ -12,6 +12,7 @@ using DevFramework.NorthWind.DataAccess.Abstract;
 using DevFramework.NorthWind.Entities.Concreate;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Transactions;
 
 namespace DevFramewok.NorthWind.Business.Concreate.Managers
@@ -43,7 +44,15 @@ namespace DevFramewok.NorthWind.Business.Concreate.Managers
         public List<Product> GetAll()
         {
             // _queryable.Table()
-            return _productDal.GetList();
+
+            return _productDal.GetList().Select(p=>new Product //Nhibernate de gerek yok ama Entityframwork de serileştirme sorunu böyle çözülür
+            {
+                CategoryId=p.CategoryId,
+                ProductId=p.ProductId,
+                ProductName=p.ProductName,
+                QuantityPerUnit=p.QuantityPerUnit,
+                UnitPrice=p.UnitPrice
+            }).ToList();
         }
 
         public Product GetById(int id)
