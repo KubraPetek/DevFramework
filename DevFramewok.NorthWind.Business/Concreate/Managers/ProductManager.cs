@@ -1,4 +1,5 @@
-﻿using DevFramewok.NorthWind.Business.Abstract;
+﻿using AutoMapper;
+using DevFramewok.NorthWind.Business.Abstract;
 using DevFramewok.NorthWind.Business.ValidationRules.FluentValidation;
 using DevFramework.Core.Aspects.PostSharp.AuthorizationAspects;
 using DevFramework.Core.Aspects.PostSharp.CacheAspects;
@@ -8,6 +9,7 @@ using DevFramework.Core.Aspects.PostSharp.TransactionAspects;
 using DevFramework.Core.Aspects.PostSharp.ValidationAspects;
 using DevFramework.Core.CrossCuttingConcerns.Caching.Microsoft;
 using DevFramework.Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
+using DevFramework.Core.Utulities.Mappings;
 using DevFramework.NorthWind.DataAccess.Abstract;
 using DevFramework.NorthWind.Entities.Concreate;
 using System;
@@ -17,7 +19,7 @@ using System.Transactions;
 
 namespace DevFramewok.NorthWind.Business.Concreate.Managers
 {
-   // [LogAspect(typeof(FileLogger))]//Classtaki tüm metotlar loglanacaktır  //yada tüm managerların loglanması için Assambly info içinde bu tanımı yazabiliriz 
+    // [LogAspect(typeof(FileLogger))]//Classtaki tüm metotlar loglanacaktır  //yada tüm managerların loglanması için Assambly info içinde bu tanımı yazabiliriz 
     public class ProductManager : IProductService
     {
         private IProductDal _productDal;
@@ -36,23 +38,34 @@ namespace DevFramewok.NorthWind.Business.Concreate.Managers
             //ValidatorTool.FluentValidate(new ProductValidator(), product);
             return _productDal.Add(product);
         }
+        private IMapper mapper;
+
         [CacheAspect(typeof(MemoryCacheManager), 120)]
         [LogAspect(typeof(DatabaseLogger))]
         [LogAspect(typeof(FileLogger))]
         [PerformanceCounterAspect(2)]//bu metodun çalışması 2 saniyeyi geçerse log tutcak
-        [SecuredOperation(Roles="Admin,Editor")]
+        [SecuredOperation(Roles = "Admin,Editor")]
         public List<Product> GetAll()
         {
+
+
             // _queryable.Table()
 
-            return _productDal.GetList().Select(p=>new Product //Nhibernate de gerek yok ama Entityframwork de serileştirme sorunu böyle çözülür
-            {
-                CategoryId=p.CategoryId,
-                ProductId=p.ProductId,
-                ProductName=p.ProductName,
-                QuantityPerUnit=p.QuantityPerUnit,
-                UnitPrice=p.UnitPrice
-            }).ToList();
+
+
+            var products = AutoMapperHelper.MapToSameTypeLis<Product>(_productDal.GetList());
+            return products;
+
+            //return _productDal.GetList().Select(p=>new Product //Nhibernate de gerek yok ama Entityframwork de serileştirme sorunu böyle çözülür
+            //{
+            //    CategoryId=p.CategoryId,
+            //    ProductId=p.ProductId,
+            //    ProductName=p.ProductName,
+            //    QuantityPerUnit=p.QuantityPerUnit,
+            //    UnitPrice=p.UnitPrice
+            //}).ToList();
+
+
         }
 
         public Product GetById(int id)
