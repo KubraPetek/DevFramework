@@ -1,4 +1,7 @@
-﻿using System;
+﻿using DevFramewok.NorthWind.Business.Abstract;
+using DevFramewok.NorthWind.Business.DependencyResolvers.Ninject;
+using DevFramework.NorthWind.Entities.Concreate;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -14,19 +17,23 @@ namespace DevFramework.Northwind.WebApi.MessageHandlers
     {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            //Postmandan çağırırken header kısmında kullanılan  token burda decode edilip kullanılır. Bu tokeni de base64 formatı ile kullanıcı adı ve sifreden oluşturabiliriz 
             try
             {
                 var token = request.Headers.GetValues("Authorization").FirstOrDefault();
                 if (token!=null)
-                {
+                { 
                     byte[] data = Convert.FromBase64String(token);
                     string decodedString = Encoding.UTF8.GetString(data);
 
                     string[] tokenValues = decodedString.Split(':');
+                    IUserService userService = InstanceFactoriy.GetInstance<IUserService>(); //InstanceFactory de oluşturulacak --UserManager verecek Bind durumundan dolayı
 
-                    if (tokenValues[0]=="kubra"&&tokenValues[1]=="12345")// TODO : Burayı sonradan db den kontrol etmek gerekecek
+                    User user = userService.GetByUserNameAndPassword(tokenValues[0], tokenValues[1]);
+
+                    if (user!=null)// artık db den kontrol ediyoruz 
                     {
-                        IPrincipal principal = new GenericPrincipal(new GenericIdentity(tokenValues[0]), new[] { "Admin" });
+                        IPrincipal principal = new GenericPrincipal(new GenericIdentity(tokenValues[0]),userService.GetUserRoles(user).Select(u=>u.RoleName).ToArray());
                         Thread.CurrentPrincipal = principal;
                         HttpContext.Current.User = principal; //Web api için yapıldı
                     }
