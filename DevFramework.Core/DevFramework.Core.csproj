@@ -142,6 +142,7 @@
     <Compile Include="Entities\IEntity.cs" />
     <Compile Include="DataAccess\IEntityRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utulities\Common\WcfProxy.cs" />
     <Compile Include="Utulities\Mappings\AutoMapperHelper.cs" />
     <Compile Include="Utulities\Mvc\Infrastructure\NinjectControllerFactory.cs" />
   </ItemGroup>
