@@ -23,12 +23,14 @@ namespace DevFramewok.NorthWind.Business.Concreate.Managers
     public class ProductManager : IProductService
     {
         private IProductDal _productDal;
+        private IMapper _mapper;
         //private IQueryaleRepository<Product> _queryable;
-        public ProductManager(IProductDal productDal)
+        public ProductManager(IProductDal productDal, IMapper mapper)
         {
             //(IProductDal productDal, IQueryaleRepository<Product> queryable)
             //_queryable = queryable;
             _productDal = productDal;
+            _mapper = mapper;
         }
         [FluentValidationAspect(typeof(ProductValidator))]
         [CacheRemoveAspect(typeof(MemoryCacheManager))]
@@ -53,7 +55,8 @@ namespace DevFramewok.NorthWind.Business.Concreate.Managers
 
 
 
-            var products = AutoMapperHelper.MapToSameTypeLis<Product>(_productDal.GetList());
+            var products = _mapper.Map<List<Product>>(_productDal.GetList()); //Core daki autoMapperHelper yerine bunu kullandık
+            //var products = AutoMapperHelper.MapToSameTypeLis<Product>(_productDal.GetList());
             return products;
 
             //return _productDal.GetList().Select(p=>new Product //Nhibernate de gerek yok ama Entityframwork de serileştirme sorunu böyle çözülür
